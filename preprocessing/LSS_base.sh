@@ -1,10 +1,8 @@
 #!/bin/bash
 
-#base_dir=/cluster/tufts/halassalab/mliu23/QUANTUM_4S
-#tool_dir=/cluster/tufts/halassalab/mliu23/softwares/
-#sub_id=44444
-#ses_id=20231220
-#root_dir=/cluster
+#base_dir=/path/to/QUANTUM_4S
+#tool_dir=/path/to/software/
+#root_dir=/path/to
 #nordic=false
 
 space=tlrc
@@ -20,9 +18,8 @@ task_dir=${func_dir}/task-${task}
 
 
 # remove nuisance, or clean the data to only keep meaningful signal
-suffix=v3
-if [ ! -f ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_cleansignal_${suffix}.nii.gz ];then
-echo ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_cleansignal_${suffix}.nii.gz
+if [ ! -f ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_cleansignal.nii.gz ];then
+echo ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_cleansignal.nii.gz
 singularity run \
     -B ${root_dir}:${root_dir} \
     ${tool_dir}/afni_withr_24.0.08.sif \
@@ -47,7 +44,7 @@ singularity run \
     -polort 5                                                                        \
     -jobs 50                                                                         \
     -nobucket                                                                        \
-    -errts ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_cleansignal_${suffix}.nii.gz
+    -errts ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_cleansignal.nii.gz
 fi
 
 
@@ -69,13 +66,13 @@ do
     echo take events of ${mapped_events[0]} and ${mapped_events[1]} as one single regressor
     echo "##########"
 
-if [ ! -f ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_${event}_LSS_${suffix}.nii.gz ];then
+if [ ! -f ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_${event}_LSS.nii.gz ];then
 
-echo ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_${event}_LSS_${suffix}.nii.gz
+echo ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_${event}_LSS.nii.gz
 singularity run \
      -B ${root_dir}:${root_dir} \
     ${tool_dir}/afni_withr_24.0.08.sif \
-    3dDeconvolve -input ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_cleansignal_${suffix}.nii.gz \
+    3dDeconvolve -input ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_cleansignal.nii.gz \
     -concat '1D: 0 430 860 1290 1720'                                                  \
     -mask ${task_dir}/mask_anat.${sub_id}+${space}.HEAD                              \
     -polort 5                                                                        \
@@ -84,16 +81,16 @@ singularity run \
     -stim_times_IM 1 ${timing_dir}/${event}_time.1D 'BLOCK(1,1)' -stim_label 1 ${event}                 \
     -stim_times 2 ${timing_dir}/${mapped_events[0]}_time.1D 'BLOCK(1,1)' -stim_label 2 ${mapped_events[0]}             \
     -stim_times 3 ${timing_dir}/${mapped_events[1]}_time.1D 'BLOCK(1,1)' -stim_label 3 ${mapped_events[1]}       \
-    -x1D ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_${event}_IM_${suffix}.xmat.1D \
+    -x1D ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_${event}_IM.xmat.1D \
     -x1D_stop -allzero_OK
 
 singularity run \
      -B ${root_dir}:${root_dir} \
     ${tool_dir}/afni_withr_24.0.08.sif \
-    3dLSS -input ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_cleansignal_${suffix}.nii.gz \
+    3dLSS -input ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_cleansignal.nii.gz \
         -mask ${task_dir}/mask_anat.${sub_id}+${space}.HEAD \
-        -matrix ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_${event}_IM_${suffix}.xmat.1D \
-        -prefix ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_${event}_LSS_${suffix}.nii.gz
+        -matrix ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_${event}_IM.xmat.1D \
+        -prefix ${result_dir}/${task}_sub-${sub_id}_ses-${ses_id}_${event}_LSS.nii.gz
 
 fi
 

@@ -1,11 +1,9 @@
 #!/bin/bash
 
 
-#sub_id=44444
-#sess_id=20240207
-#root_dir=/cluster
-#tool_dir=/cluster/tufts/halassalab/mliu23/softwares/
-#base_dir=/cluster/home/mliu23/lab_home/QUANTUM_4S/
+#root_dir=/path/to
+#tool_dir=/path/to/software/
+#base_dir=/path/to/QUANTUM_4S/
 ses_dir=${base_dir}/Nifti_nordic/sub-${sub_id}/ses-${ses_id}
 timing_dir=${base_dir}/GLM_1Ds/sub-${sub_id}/ses-${ses_id}
 

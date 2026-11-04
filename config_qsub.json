@@ -1,0 +1,49 @@
+{
+ "project_config": {
+  "tool": "rsa",
+  "nordic": "true"
+ },
+ "defaults": {
+  "mem_free": "40G",
+  "core": "24",
+  "node": "1",
+  "time": "23:00:00",
+  "max_parallel": 4,
+  "exclude": ""
+ },
+ "active_cluster": "cluster_a",
+ "clusters": {
+  "cluster_a": {
+   "scheduler": "slurm",
+   "base_dir": "/path/to/QUANTUM_4S",
+   "code_dir": "/path/to/code",
+   "tool_dir": "/path/to/software",
+   "root_dir": "/path/to/",
+   "queue": "<partition>",
+   "account": "<account>"
+  },
+  "cluster_a_local": {
+   "scheduler": "local",
+   "base_dir": "/path/to/QUANTUM_4S",
+   "code_dir": "/path/to/code",
+   "tool_dir": "/path/to/software",
+   "root_dir": "/path/to/"
+  },
+  "cluster_b": {
+   "scheduler": "SGE",
+   "base_dir": "/path/to/QUANTUM_4S",
+   "code_dir": "/path/to/code",
+   "tool_dir": "/path/to/software",
+   "root_dir": "/path/to/",
+   "queue": "<queue>",
+   "pe_name": "smp"
+  },
+  "cluster_b_local": {
+   "scheduler": "local",
+   "base_dir": "/path/to/QUANTUM_4S",
+   "code_dir": "/path/to/code",
+   "tool_dir": "/path/to/software",
+   "root_dir": "/path/to/"
+  }
+ }
+}

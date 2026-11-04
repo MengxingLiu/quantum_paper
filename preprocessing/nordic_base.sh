@@ -1,11 +1,9 @@
 #!/bin/bash
 
 module load matlab/2021a
-#sub_id=10263
-#sess_id=20240308
-#base_dir=/cluster/home/mliu23/lab_home/QUANTUM_4S
-#root_dir=/cluster
-#tool_dir=/cluster/home/mliu23/lab_home/softwares
+#base_dir=/path/to/QUANTUM_4S
+#root_dir=/path/to
+#tool_dir=/path/to/software
 func_dir=${base_dir}/Nifti/sub-${sub_id}/ses-${ses_id}/func
 
 
@@ -63,7 +61,7 @@ do
            3dcalc -prefix ${output_abs} -cx2r ABS -a ${output_cpx} -expr 'a' -overwrite
         # run nordic
         matlab -nodesktop \
-            -batch "addpath('/cluster/home/mliu23/GIT/NORDIC_Raw/'); ARG.DIROUT='${nordic_func_dir}', NIFTI_NORDIC('${output_abs}','${output_phase}','${output_nordic}', ARG);exit"
+            -batch "addpath('/path/to/GIT/NORDIC_Raw/'); ARG.DIROUT='${nordic_func_dir}', NIFTI_NORDIC('${output_abs}','${output_phase}','${output_nordic}', ARG);exit"
         gzip ${nordic_func_dir}/${output_nordic}.nii
         # cp
         cp ${func_dir}/sub-${sub_id}_ses-${ses_id}_task-${task}_run-${run}_part-mag_bold.json \
